@@ -1,0 +1,37 @@
+html{
+    font-size: 30px;
+}    
+    #div1 {
+    height: 200px;
+    width: 200px;
+    background-color: hsla(25, 26%, 20%, 1);
+    /* color: red; */
+     /* #d44d10; */
+    /* rgb(20, 30, 200) */
+    /* rgba(20, 30, 200, 0.5) */
+    /* hsl(25, 26%, 20%) */
+    /* border-width: 6px 10px;
+    border-style: solid;
+    border-color: red; */
+    border: 4px solid red;   /* or in a singe line */
+    border-radius: 10px;
+}
+
+/* * types in color
+    name
+    hex
+    rgb
+    rgba
+    hsl
+    hsla */
+
+#div2 {
+    height: 4rem;
+    width: 6rem;
+    background-color: red;
+}
+
+#sample-para {
+    border: 5px solid black;
+    border-radius: 10px;
+}

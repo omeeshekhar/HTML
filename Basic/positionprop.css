@@ -1,0 +1,26 @@
+#outer-div {
+    border: 2px solid black;
+    margin: 20px;
+    position: relative; 
+}
+
+#div1 {
+    height: 100px;
+    width: 100px;
+    background-color: red;
+}
+
+#div2 {
+    height: 100px;
+    width: 100px;
+    background-color: blue;
+    position: fixed;
+    /* left: 50px;
+    top: 50px; */
+}
+
+#div3 {
+    height: 100px;
+    width: 100px;
+    background-color: green;
+}

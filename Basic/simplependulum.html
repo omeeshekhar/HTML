@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Moving Pendulum Pattern</title>
+
+<style>
+body {
+    margin: 0;
+    background: #101827;
+    color: white;
+    font-family: Arial;
+    text-align: center;
+}
+
+h1 {
+    margin: 20px;
+}
+
+canvas {
+    background: #111c2e;
+    border: 2px solid #64748b;
+    border-radius: 10px;
+    max-width: 95%;
+}
+
+button {
+    padding: 10px 25px;
+    margin: 15px 5px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Simple Pendulum</h1>
+
+<canvas id="canvas" width="700" height="500"></canvas>
+
+<br>
+
+<button onclick="running=true">Start</button>
+<button onclick="running=false">Pause</button>
+<button onclick="reset()">Reset</button>
+
+<script>
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const pivotX = 350;
+const pivotY = 100;
+const length = 180;
+
+let time = 0;
+let running = true;
+
+let backgroundOffset = 0;
+let trail = [];
+
+function drawBackground() {
+
+    ctx.strokeStyle = "#26364e";
+    ctx.lineWidth = 1;
+
+    // Moving horizontal background lines
+    for (let y = -40; y < 550; y += 40) {
+
+        let position = (y + backgroundOffset) % 40;
+
+        ctx.beginPath();
+        ctx.moveTo(0, position);
+        ctx.lineTo(700, position);
+        ctx.stroke();
+    }
+
+    // Moving vertical background lines
+    for (let x = 0; x <= 700; x += 40) {
+
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, 500);
+        ctx.stroke();
+    }
+}
+
+function draw() {
+
+    ctx.clearRect(0, 0, 700, 500);
+
+    drawBackground();
+
+    // Pendulum angle
+    let angle = 0.75 * Math.sin(time);
+
+    let x = pivotX + length * Math.sin(angle);
+    let y = pivotY + length * Math.cos(angle);
+
+    // Save trail
+    trail.push({x, y});
+
+    // Draw snake-like trail
+    ctx.beginPath();
+
+    for (let i = 0; i < trail.length; i++) {
+
+        if (i === 0) {
+            ctx.moveTo(trail[i].x, trail[i].y);
+        } else {
+            ctx.lineTo(trail[i].x, trail[i].y);
+        }
+    }
+
+    ctx.strokeStyle = "#ff3b5c";
+    ctx.lineWidth = 3;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = "#ff3b5c";
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Draw pivot support
+    ctx.fillStyle = "#cbd5e1";
+    ctx.fillRect(pivotX - 45, pivotY - 8, 90, 8);
+
+    // Draw pivot
+    ctx.beginPath();
+    ctx.arc(pivotX, pivotY, 6, 0, Math.PI * 2);
+    ctx.fillStyle = "white";
+    ctx.fill();
+
+    // Draw string
+    ctx.beginPath();
+    ctx.moveTo(pivotX, pivotY);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = "#e2e8f0";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Draw bob
+    ctx.beginPath();
+    ctx.arc(x, y, 18, 0, Math.PI * 2);
+    ctx.fillStyle = "#38bdf8";
+    ctx.fill();
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Update background movement
+    backgroundOffset += 1.5;
+
+    // Move old trail upward to create scrolling effect
+    for (let point of trail) {
+        point.y -= 1.5;
+    }
+
+    // Remove points outside screen
+    trail = trail.filter(point => point.y > -10);
+
+    if (running) {
+        time += 0.035;
+    }
+
+}
+
+function animate() {
+
+    draw();
+    requestAnimationFrame(animate);
+
+}
+
+function reset() {
+    time = 0;
+    backgroundOffset = 0;
+    trail = [];
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
